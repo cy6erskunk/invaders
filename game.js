@@ -12,11 +12,11 @@
 
         loadSound("shoot.wav", function (shootSound) {
             self.shootSound = shootSound;
+            self.state = self.STATES.PROGRESS;
 
             var tick = function () {
                 self.update();
-                self.draw(screen, gameSize);
-                requestAnimationFrame(tick);
+                self.draw(screen, gameSize) && requestAnimationFrame(tick);
             };
 
             tick();
@@ -24,6 +24,11 @@
     };
 
     Game.prototype = {
+        STATES: {
+            PROGRESS: 0,
+            WIN: 1,
+            LOOSE: 2
+        },
         update: function () {
             var bodies = this.bodies;
             var notCollidingWithAnything = function (b1) {
@@ -34,11 +39,30 @@
             for (var i = 0; i < this.bodies.length; i++ ) {
                 this.bodies[i].update();
             }
+
+            if (this.bodies.filter(function (b) { return b instanceof Player; }).length === 0) {
+                this.state = this.STATES.LOOSE;
+            } else if (this.bodies.filter(function (b) { return b instanceof Invader; }).length === 0) {
+                this.state = this.STATES.WIN;
+            }
         },
         draw: function (screen, gameSize) {
             screen.clearRect(0, 0, gameSize.x, gameSize.y);
-            for (var i = 0; i < this.bodies.length; i++ ) {
-                drawRect(screen, this.bodies[i]);
+            if (this.state === this.STATES.PROGRESS) {
+                for (var i = 0; i < this.bodies.length; i++ ) {
+                    drawRect(screen, this.bodies[i]);
+                }
+                return true;
+            } else {
+                screen.font = '48px serif';
+                if (this.state === this.STATES.WIN) {
+                    screen.fillStyle = 'green';
+                    screen.fillText('Win!', 50, 100);
+                } else {
+                    screen.fillStyle = 'red';
+                    screen.fillText('Lost', 50, 100);
+                }
+                return false;
             }
         },
         addBody: function (body) {
@@ -177,7 +201,7 @@
         sound.load();
     };
 
-    window.onload = function () {
+    document.getElementById('start').onclick = function () {
         new Game('screen');
     };
 })();
