@@ -78,18 +78,24 @@
 
     var Player = function(game, gameSize) {
         this.game = game;
+        this.gameSize = gameSize;
         this.size = { x: 15, y: 15 };
         this.center = { x: gameSize.x / 2, y: gameSize.y - this.size.x };
         this.keyboarder = new Keyboarder();
+        this.velocity = 2;
     };
 
     Player.prototype = {
         update: function () {
             if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT)) {
-                this.center.x -= 2;
+                if (this.center.x - this.size.x / 2 - this.velocity > 0) {
+                    this.center.x -= this.velocity;
+                }
             } else
             if (this.keyboarder.isDown(this.keyboarder.KEYS.RIGHT)) {
-                this.center.x += 2;
+                if (this.center.x + this.size.x / 2 + this.velocity < this.gameSize.x) {
+                    this.center.x += this.velocity;
+                }
             }
 
             if (this.keyboarder.isDown(this.keyboarder.KEYS.SPACE)) {
