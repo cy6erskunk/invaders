@@ -94,6 +94,7 @@
         this.center = { x: gameSize.x / 2, y: gameSize.y - this.size.x };
         this.keyboarder = new Keyboarder();
         this.velocity = 2;
+        this.color = 'blue';
     };
 
     Player.prototype = {
@@ -110,7 +111,7 @@
             }
 
             if (this.keyboarder.isDown(this.keyboarder.KEYS.SPACE)) {
-                var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6});
+                var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6}, 'green');
 
                 this.game.addBody(bullet);
                 this.game.shootSound.load();
@@ -119,10 +120,11 @@
         }
     };
 
-    var Bullet = function(center, velocity) {
+    var Bullet = function(center, velocity, color) {
         this.size = { x: 3, y: 3 };
         this.center = center;
         this.velocity = velocity;
+        this.color = color;
     };
 
     Bullet.prototype = {
@@ -136,7 +138,7 @@
         this.game = game;
         this.size = { x: 15, y: 15 };
         this.center = center;
-
+        this.color = '#ff8000';
 
         this.patrolX = 0;
         this.speedX = 0.3;
@@ -153,7 +155,7 @@
 
             if ( !this.game.invadersBelow(this) && Math.random() > 0.99 ) {
                 var bullet = new Bullet({ x: this.center.x, y: this.center.y + this.size.x / 2 },
-                        { x: Math.random() - 0.5, y: 2 });
+                        { x: Math.random() - 0.5, y: 2 }, 'red');
                 this.game.addBody(bullet);
             }
         }
@@ -171,6 +173,7 @@
     };
 
     var drawRect = function (screen, body) {
+        screen.fillStyle = body.color || 'black';
         screen.fillRect(body.center.x - body.size.x / 2,
                  body.center.y - body.size.y / 2,
                  body.size.x, body.size.y);
