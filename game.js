@@ -2,10 +2,10 @@
     var Game = function (canvasId) {
         var canvas = document.getElementById(canvasId);
         var screen = canvas.getContext('2d');
-        var gameSize = { x: canvas.width, y: canvas.height };
+        this.gameSize = { x: canvas.width, y: canvas.height };
 
         this.bodies = createInvaders(this).concat([
-            new Player(this, gameSize)
+            new Player(this, this.gameSize)
         ]);
 
         var self = this;
@@ -15,8 +15,9 @@
             self.state = self.STATES.PROGRESS;
 
             var tick = function () {
+                self.gcBodies();
                 self.update();
-                self.draw(screen, gameSize) && requestAnimationFrame(tick);
+                self.draw(screen, self.gameSize) && requestAnimationFrame(tick);
             };
 
             tick();
@@ -73,6 +74,16 @@
                 b.center.y > invader.center.y &&
                 b.center.x - invader.center.x < invader.size.x; 
             }).length > 0;
+        },
+        gcBodies: function () {
+            var self = this;
+
+            this.bodies = this.bodies.filter(function (b) {
+                return b.center.x + b.size.x / 2 < self.gameSize.x &&
+                    b.center.x - b.size.x / 2 > 0 && 
+                    b.center.y + b.size.y / 2 < self.gameSize.y &&
+                    b.center.y - b.size.y / 2 > 0;
+            });
         }
     };
 
