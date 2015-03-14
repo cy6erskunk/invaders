@@ -99,6 +99,11 @@
         this.cooldownElem = document.createElement('progress');
         this.cooldownElem.max = this.COOLDOWN;
         this.cooldownElem.value = this.COOLDOWN;
+        var _cde = document.querySelector('progress');
+        if (_cde) {
+            document.body.removeChild(_cde);
+            _cde = null;
+        }
         document.body.appendChild(this.cooldownElem);
     };
 
