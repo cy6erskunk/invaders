@@ -96,6 +96,10 @@
         this.velocity = 2;
         this.color = 'blue';
         this.cooldown = 0;
+        this.cooldownElem = document.createElement('progress');
+        this.cooldownElem.max = this.COOLDOWN;
+        this.cooldownElem.value = this.COOLDOWN;
+        document.body.appendChild(this.cooldownElem);
     };
 
     Player.prototype = {
@@ -106,6 +110,9 @@
             } else {
                 this.cooldown = 0;
             }
+            this.cooldownElem.max = this.COOLDOWN; // in case it have been changed
+            this.cooldownElem.value = this.COOLDOWN - this.cooldown;
+
             if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT)) {
                 if (this.center.x - this.size.x / 2 - this.velocity > 0) {
                     this.center.x -= this.velocity;
