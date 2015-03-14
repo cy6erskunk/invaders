@@ -99,7 +99,7 @@
     };
 
     Player.prototype = {
-        COOLDOWN: 5, // number of ticks
+        COOLDOWN: 50, // number of ticks
         update: function () {
             if (this.cooldown > 0) {
                 this.cooldown -= 1;
@@ -154,6 +154,7 @@
     };
 
     Invader.prototype = {
+        THRESHOLD: 0.995,
         update: function () {
             if (this.patrolX < 0 || this.patrolX > 40) {
                 this.speedX *= -1;
@@ -162,7 +163,7 @@
             this.center.x += this.speedX;
             this.patrolX += this.speedX;
 
-            if ( !this.game.invadersBelow(this) && Math.random() > 0.99 ) {
+            if ( !this.game.invadersBelow(this) && Math.random() > this.THRESHOLD ) {
                 var bullet = new Bullet({ x: this.center.x, y: this.center.y + this.size.x / 2 },
                         { x: Math.random() - 0.5, y: 2 }, 'red');
                 this.game.addBody(bullet);
@@ -229,6 +230,32 @@
         sound.addEventListener('canplaythrough', loaded);
         sound.load();
     };
+
+    var $threshold = document.getElementById('threshold');
+    var $cooldown = document.getElementById('cooldown');
+
+    $threshold.value = Invader.prototype.THRESHOLD;
+    $cooldown.value = Player.prototype.COOLDOWN;
+
+    $threshold.addEventListener('input', function (e) {
+        this.style.color = 'black';
+        var _value = this.value;
+
+        if (_value > 0 && _value <= 1) {
+            Invader.prototype.THRESHOLD = _value;
+            this.style.color = 'green';
+        }
+    });
+
+    $cooldown.addEventListener('input', function (e) {
+        this.style.color = 'black';
+        var _value = this.value;
+
+        if (_value > 0) {
+            Player.prototype.COOLDOWN = _value;
+            this.style.color = 'green';
+        }
+    });
 
     document.getElementById('start').onclick = function () {
         new Game('screen');
