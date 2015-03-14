@@ -95,10 +95,17 @@
         this.keyboarder = new Keyboarder();
         this.velocity = 2;
         this.color = 'blue';
+        this.cooldown = 0;
     };
 
     Player.prototype = {
+        COOLDOWN: 5, // number of ticks
         update: function () {
+            if (this.cooldown > 0) {
+                this.cooldown -= 1;
+            } else {
+                this.cooldown = 0;
+            }
             if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT)) {
                 if (this.center.x - this.size.x / 2 - this.velocity > 0) {
                     this.center.x -= this.velocity;
@@ -111,11 +118,13 @@
             }
 
             if (this.keyboarder.isDown(this.keyboarder.KEYS.SPACE)) {
-                var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6}, 'green');
-
-                this.game.addBody(bullet);
-                this.game.shootSound.load();
-                this.game.shootSound.play();
+                if (!this.cooldown) {
+                    var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6}, 'green');
+                    this.cooldown = this.COOLDOWN;
+                    this.game.addBody(bullet);
+                    this.game.shootSound.load();
+                    this.game.shootSound.play();
+                }
             }
         }
     };
