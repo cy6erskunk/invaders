@@ -55,13 +55,13 @@
                 }
                 return true;
             } else {
-                screen.font = '48px serif';
+                screen.font = '64px Arial';
                 if (this.state === this.STATES.WIN) {
                     screen.fillStyle = 'green';
-                    screen.fillText('Win!', 50, 100);
+                    screen.fillText('You Win!', 20, 150);
                 } else {
-                    screen.fillStyle = 'red';
-                    screen.fillText('Lost', 50, 100);
+                    screen.fillStyle = '#F4713D';
+                    screen.fillText('You Loose', 5, 150);
                 }
                 return false;
             }
