@@ -134,8 +134,10 @@
                     var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6}, 'green');
                     this.cooldown = this.COOLDOWN;
                     this.game.addBody(bullet);
-                    this.game.shootSound.load();
-                    this.game.shootSound.play();
+                    if (!soundDisabled) {
+                        this.game.shootSound.load();
+                        this.game.shootSound.play();
+                    }
                 }
             }
         }
@@ -272,4 +274,17 @@
     document.getElementById('start').onclick = function () {
         new Game('screen');
     };
+
+    var soundDisabled = false;
+    soundButton = document.getElementById('mute');
+    var toggleSound = function () {
+        if (!soundDisabled) {
+            soundButton.textContent = 'unmute';
+            soundDisabled = true;
+        } else {
+            soundButton.textContent = 'mute';
+            soundDisabled = false;
+        }
+    };
+    soundButton.onclick = toggleSound;
 })();
