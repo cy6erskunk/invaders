@@ -1,3 +1,4 @@
+/* eslint-env browser */
 ;(function () {
     var Game = function (canvasId) {
         var canvas = document.getElementById(canvasId);
@@ -120,18 +121,18 @@
             this.cooldownElem.max = this.COOLDOWN; // in case it have been changed
             this.cooldownElem.value = this.COOLDOWN - this.cooldown;
 
-            if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT)) {
+            if (this.keyboarder.isDown(Keyboarder.KEYS.LEFT)) {
                 if (this.center.x - this.size.x / 2 - this.velocity > 0) {
                     this.center.x -= this.velocity;
                 }
             } else
-            if (this.keyboarder.isDown(this.keyboarder.KEYS.RIGHT)) {
+            if (this.keyboarder.isDown(Keyboarder.KEYS.RIGHT)) {
                 if (this.center.x + this.size.x / 2 + this.velocity < this.gameSize.x) {
                     this.center.x += this.velocity;
                 }
             }
 
-            if (this.keyboarder.isDown(this.keyboarder.KEYS.SPACE)) {
+            if (this.keyboarder.isDown(Keyboarder.KEYS.SPACE)) {
                 if (!this.cooldown) {
                     var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6}, 'green');
                     this.cooldown = this.COOLDOWN;
@@ -206,25 +207,25 @@
     };
 
     var Keyboarder  = function () {
-        var keyState = {};
-
         window.onkeydown = function (e) {
-            keyState[e.keyCode] = true;
+            Keyboarder.keyState[e.keyCode] = true;
         };
 
         window.onkeyup = function (e) {
-            keyState[e.keyCode] = false;
+            Keyboarder.keyState[e.keyCode] = false;
         };
 
         this.isDown = function (keyCode) {
-            return keyState[keyCode] === true;
+            return Keyboarder.keyState[keyCode] === true;
         };
 
-        this.KEYS = {
-            LEFT: 37,
-            RIGHT: 39,
-            SPACE: 32
-        };
+    };
+    
+    Keyboarder.keyState = {};
+    Keyboarder.KEYS = {
+        LEFT: 37,
+        RIGHT: 39,
+        SPACE: 32
     };
 
     var colliding = function (b1, b2) {
