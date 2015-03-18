@@ -17,7 +17,9 @@
             var tick = function () {
                 self.gcBodies();
                 self.update();
-                self.draw(screen, self.gameSize) && requestAnimationFrame(tick);
+                if (self.draw(screen, self.gameSize)) {
+                    requestAnimationFrame(tick);
+                }
             };
 
             tick();
@@ -230,7 +232,7 @@
                 b1.center.x + b1.size.x / 2 < b2.center.x - b2.size.x / 2 ||
                 b1.center.y + b1.size.y / 2 < b2.center.y - b2.size.y / 2 ||
                 b1.center.x - b1.size.x / 2 > b2.center.x + b2.size.x / 2 ||
-                b1.center.y - b1.size.y / 2 > b2.center.y + b2.size.y / 2)
+                b1.center.y - b1.size.y / 2 > b2.center.y + b2.size.y / 2);
     };
 
 
@@ -276,7 +278,7 @@
     };
 
     var soundDisabled = false;
-    soundButton = document.getElementById('mute');
+    var soundButton = document.getElementById('mute');
     var toggleSound = function () {
         if (!soundDisabled) {
             soundButton.textContent = 'unmute';
