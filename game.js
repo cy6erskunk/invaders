@@ -276,6 +276,7 @@
 
     document.getElementById('start').onclick = function () {
         new Game('screen');
+        this.blur();
     };
 
     var soundDisabled = false;
@@ -288,6 +289,7 @@
             soundButton.textContent = 'mute';
             soundDisabled = false;
         }
+        this.blur();
     };
     soundButton.onclick = toggleSound;
 })();
