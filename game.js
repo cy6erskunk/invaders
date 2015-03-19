@@ -145,6 +145,10 @@
                     }
                 }
             }
+            if (this.keyboarder.isDown(Keyboarder.KEYS.ESC)) {
+                Keyboarder.stopKey(Keyboarder.KEYS.ESC);
+                alert('PAUSE');
+            }
         }
     };
 
@@ -227,7 +231,11 @@
     Keyboarder.KEYS = {
         LEFT: 37,
         RIGHT: 39,
-        SPACE: 32
+        SPACE: 32,
+        ESC: 27
+    };
+    Keyboarder.stopKey = function (keyCode) {
+        Keyboarder.keyState[keyCode] = false;
     };
 
     var colliding = function (b1, b2) {
