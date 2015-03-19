@@ -1,5 +1,7 @@
 /* eslint-env browser */
+/* eslint quotes: [ 1, "single" ], no-underscore-dangle: 0 */
 ;(function () {
+    'use strict';
     var Game = function (canvasId) {
         var canvas = document.getElementById(canvasId);
         var screen = canvas.getContext('2d');
@@ -11,7 +13,7 @@
 
         var self = this;
 
-        loadSound("shoot.wav", function (shootSound) {
+        loadSound('shoot.wav', function (shootSound) {
             self.shootSound = shootSound;
             self.state = self.STATES.PROGRESS;
 
@@ -75,7 +77,7 @@
         invadersBelow: function (invader) {
             return this.bodies.filter(function(b) { return b instanceof Invader &&
                 b.center.y > invader.center.y &&
-                b.center.x - invader.center.x < invader.size.x; 
+                b.center.x - invader.center.x < invader.size.x;
             }).length > 0;
         },
         gcBodies: function () {
@@ -83,7 +85,7 @@
 
             this.bodies = this.bodies.filter(function (b) {
                 return b.center.x + b.size.x / 2 < self.gameSize.x &&
-                    b.center.x - b.size.x / 2 > 0 && 
+                    b.center.x - b.size.x / 2 > 0 &&
                     b.center.y + b.size.y / 2 < self.gameSize.y &&
                     b.center.y - b.size.y / 2 > 0;
             });
@@ -206,7 +208,7 @@
                  body.size.x, body.size.y);
     };
 
-    var Keyboarder  = function () {
+    var Keyboarder = function () {
         window.onkeydown = function (e) {
             Keyboarder.keyState[e.keyCode] = true;
         };
@@ -220,7 +222,7 @@
         };
 
     };
-    
+
     Keyboarder.keyState = {};
     Keyboarder.KEYS = {
         LEFT: 37,
@@ -254,7 +256,7 @@
     $threshold.value = Invader.prototype.THRESHOLD;
     $cooldown.value = Player.prototype.COOLDOWN;
 
-    $threshold.addEventListener('input', function (e) {
+    $threshold.addEventListener('input', function () {
         this.style.color = 'black';
         var _value = this.value;
 
@@ -264,7 +266,7 @@
         }
     });
 
-    $cooldown.addEventListener('input', function (e) {
+    $cooldown.addEventListener('input', function () {
         this.style.color = 'black';
         var _value = this.value;
 
