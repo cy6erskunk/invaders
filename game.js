@@ -11,6 +11,8 @@
             new Player(this, this.gameSize)
         ]);
 
+        this.paused = false;
+
         var self = this;
 
         loadSound('shoot.wav', function (shootSound) {
@@ -19,7 +21,14 @@
 
             var tick = function () {
                 self.gcBodies();
-                self.update();
+                if (! self.paused) {
+                    self.update();
+                }
+                if (Keyboarder.isDown(Keyboarder.KEYS.ESC)) {
+                    Keyboarder.stopKey(Keyboarder.KEYS.ESC);
+                    self.paused = !self.paused;
+                    console.log('PAUSE:', self.paused);
+                }
                 if (self.draw(screen, self.gameSize)) {
                     requestAnimationFrame(tick);
                 }
@@ -97,7 +106,6 @@
         this.gameSize = gameSize;
         this.size = { x: 15, y: 15 };
         this.center = { x: gameSize.x / 2, y: gameSize.y - this.size.x };
-        this.keyboarder = new Keyboarder();
         this.velocity = 2;
         this.color = 'blue';
         this.cooldown = 0;
@@ -123,18 +131,18 @@
             this.cooldownElem.max = this.COOLDOWN; // in case it have been changed
             this.cooldownElem.value = this.COOLDOWN - this.cooldown;
 
-            if (this.keyboarder.isDown(Keyboarder.KEYS.LEFT)) {
+            if (Keyboarder.isDown(Keyboarder.KEYS.LEFT)) {
                 if (this.center.x - this.size.x / 2 - this.velocity > 0) {
                     this.center.x -= this.velocity;
                 }
             } else
-            if (this.keyboarder.isDown(Keyboarder.KEYS.RIGHT)) {
+            if (Keyboarder.isDown(Keyboarder.KEYS.RIGHT)) {
                 if (this.center.x + this.size.x / 2 + this.velocity < this.gameSize.x) {
                     this.center.x += this.velocity;
                 }
             }
 
-            if (this.keyboarder.isDown(Keyboarder.KEYS.SPACE)) {
+            if (Keyboarder.isDown(Keyboarder.KEYS.SPACE)) {
                 if (!this.cooldown) {
                     var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6}, 'green');
                     this.cooldown = this.COOLDOWN;
@@ -144,10 +152,6 @@
                         this.game.shootSound.play();
                     }
                 }
-            }
-            if (this.keyboarder.isDown(Keyboarder.KEYS.ESC)) {
-                Keyboarder.stopKey(Keyboarder.KEYS.ESC);
-                alert('PAUSE');
             }
         }
     };
@@ -212,31 +216,32 @@
                  body.size.x, body.size.y);
     };
 
-    var Keyboarder = function () {
-        window.onkeydown = function (e) {
-            Keyboarder.keyState[e.keyCode] = true;
-        };
+    var Keyboarder = {
+        init: function () {
+            window.onkeydown = function (e) {
+                Keyboarder.keyState[e.keyCode] = true;
+            };
 
-        window.onkeyup = function (e) {
-            Keyboarder.keyState[e.keyCode] = false;
-        };
-
-        this.isDown = function (keyCode) {
-            return Keyboarder.keyState[keyCode] === true;
-        };
-
+            window.onkeyup = function (e) {
+                Keyboarder.keyState[e.keyCode] = false;
+            };
+        },
+        isDown: function (keyCode) {
+            return this.keyState[keyCode] === true;
+        },
+        keyState: {},
+        KEYS: {
+            LEFT: 37,
+            RIGHT: 39,
+            SPACE: 32,
+            ESC: 27
+        },
+        stopKey: function (keyCode) {
+            this.keyState[keyCode] = false;
+        }
     };
+    Keyboarder.init();
 
-    Keyboarder.keyState = {};
-    Keyboarder.KEYS = {
-        LEFT: 37,
-        RIGHT: 39,
-        SPACE: 32,
-        ESC: 27
-    };
-    Keyboarder.stopKey = function (keyCode) {
-        Keyboarder.keyState[keyCode] = false;
-    };
 
     var colliding = function (b1, b2) {
         return !(b1 === b2 ||
