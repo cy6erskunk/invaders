@@ -144,7 +144,7 @@
 
             if (Keyboarder.isDown(Keyboarder.KEYS.SPACE)) {
                 if (!this.cooldown) {
-                    var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6}, 'green');
+                    var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 6, y: -6}, 'green', true);
                     this.cooldown = this.COOLDOWN;
                     this.game.addBody(bullet);
                     if (!soundDisabled) {
@@ -156,16 +156,31 @@
         }
     };
 
-    var Bullet = function(center, velocity, color) {
+    var Bullet = function(center, velocity, color, crazyUpdate) {
         this.size = { x: 3, y: 3 };
         this.center = center;
         this.velocity = velocity;
         this.color = color;
+
+        if (crazyUpdate) {
+            this.update = Bullet.prototype.crazyUpdate;
+        }
     };
 
     Bullet.prototype = {
         update: function () {
             this.center.x += this.velocity.x;
+            this.center.y += this.velocity.y;
+        },
+
+        phaseVelocity: Math.PI / 3,
+        crazyUpdate: function () {
+            if (typeof this.phase === 'undefined') {
+                this.phase = 0;
+            } else {
+                this.phase += this.phaseVelocity;
+                this.center.x += (Math.sin(this.phase) - Math.sin(this.phase - this.phaseVelocity)) * this.velocity.x;
+            }
             this.center.y += this.velocity.y;
         }
     };
