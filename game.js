@@ -109,6 +109,7 @@
         this.velocity = 2;
         this.color = 'blue';
         this.cooldown = 0;
+        this.crazyBullets = false;
         this.cooldownElem = document.createElement('progress');
         this.cooldownElem.max = this.COOLDOWN;
         this.cooldownElem.value = this.COOLDOWN;
@@ -144,7 +145,7 @@
 
             if (Keyboarder.isDown(Keyboarder.KEYS.SPACE)) {
                 if (!this.cooldown) {
-                    var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 6, y: -6}, 'green', true);
+                    var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.x / 2 }, { x: 0, y: -6}, 'green', this.crazyBullets);
                     this.cooldown = this.COOLDOWN;
                     this.game.addBody(bullet);
                     if (!soundDisabled) {
@@ -152,6 +153,11 @@
                         this.game.shootSound.play();
                     }
                 }
+            }
+
+            // toggle bullet type on TAB
+            if (Keyboarder.isDown(Keyboarder.KEYS.TAB)) {
+                this.crazyBullets = !this.crazyBullets;
             }
         }
     };
@@ -176,6 +182,7 @@
         phaseVelocity: Math.PI / 3,
         crazyUpdate: function () {
             if (typeof this.phase === 'undefined') {
+                this.velocity.x = this.velocity.y;
                 this.phase = 0;
             } else {
                 this.phase += this.phaseVelocity;
@@ -246,6 +253,7 @@
         },
         keyState: {},
         KEYS: {
+            TAB: 9,
             LEFT: 37,
             RIGHT: 39,
             SPACE: 32,
