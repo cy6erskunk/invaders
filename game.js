@@ -110,6 +110,7 @@
         this.color = 'blue';
         this.cooldown = 0;
         this.crazyBullets = false;
+        // Cooldown
         this.cooldownElem = document.createElement('progress');
         this.cooldownElem.max = this.COOLDOWN;
         this.cooldownElem.value = this.COOLDOWN;
@@ -119,10 +120,24 @@
             _cde = null;
         }
         document.body.appendChild(this.cooldownElem);
+        // bulletType elem
+        var bulletTypeClassName = 'bulletType';
+        this.bulletTypeElem = document.createElement('span');
+        this.bulletTypeElem.className = bulletTypeClassName;
+        this.updateBulletTypeIndicator();
+        var _bulletTypeElem = document.querySelector('.' + bulletTypeClassName);
+        if (_bulletTypeElem) {
+            document.body.removeChild(_bulletTypeElem);
+            _bulletTypeElem = null;
+        }
+        document.body.appendChild(this.bulletTypeElem);
     };
 
     Player.prototype = {
         COOLDOWN: 50, // number of ticks
+        updateBulletTypeIndicator: function () {
+            this.bulletTypeElem.textContent = this.crazyBullets ? 'c' : '';
+        },
         update: function () {
             if (this.cooldown > 0) {
                 this.cooldown -= 1;
@@ -158,7 +173,9 @@
             // toggle bullet type on TAB
             if (Keyboarder.isDown(Keyboarder.KEYS.TAB)) {
                 this.crazyBullets = !this.crazyBullets;
+                Keyboarder.stopKey(Keyboarder.KEYS.TAB);
             }
+            this.updateBulletTypeIndicator();
         }
     };
 
@@ -242,6 +259,7 @@
         init: function () {
             window.onkeydown = function (e) {
                 Keyboarder.keyState[e.keyCode] = true;
+                e.preventDefault();
             };
 
             window.onkeyup = function (e) {
