@@ -376,4 +376,15 @@
     };
     soundButton.onclick = toggleSound;
 
+    // pause/resume game when focusing/losing focus on text input
+    document.addEventListener('focusin', function (e) {
+        if (e.target.nodeName.toLowerCase() === 'input') {
+            gameInstance && gameInstance.pause();
+        }
+    });
+    document.addEventListener('focusout', function (e) {
+        if (e.target.nodeName.toLowerCase() === 'input') {
+            gameInstance && gameInstance.resume();
+        }
+    });
 })();
