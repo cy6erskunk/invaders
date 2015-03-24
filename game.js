@@ -2,6 +2,8 @@
 /* eslint quotes: [ 1, "single" ], no-underscore-dangle: 0 */
 ;(function () {
     'use strict';
+    var gameInstance;
+
     var Game = function (canvasId) {
         var canvas = document.getElementById(canvasId);
         var screen = canvas.getContext('2d');
@@ -21,13 +23,12 @@
 
             var tick = function () {
                 self.gcBodies();
-                if (! self.paused) {
+                if (self.isRunning()) {
                     self.update();
                 }
                 if (Keyboarder.isDown(Keyboarder.KEYS.ESC)) {
                     Keyboarder.stopKey(Keyboarder.KEYS.ESC);
-                    self.paused = !self.paused;
-                    console.log('PAUSE:', self.paused);
+                    self.toggleRunningState();
                 }
                 if (self.draw(screen, self.gameSize)) {
                     requestAnimationFrame(tick);
@@ -98,6 +99,18 @@
                     b.center.y + b.size.y / 2 < self.gameSize.y &&
                     b.center.y - b.size.y / 2 > 0;
             });
+        },
+        pause: function () {
+            this.paused = true;
+        },
+        resume: function () {
+            this.paused = false;
+        },
+        isRunning: function () {
+            return !this.paused;
+        },
+        toggleRunningState: function () {
+            return this.paused = !this.paused;
         }
     };
 
@@ -331,7 +344,18 @@
     });
 
     document.getElementById('start').onclick = function () {
-        new Game('screen');
+        gameInstance = new Game('screen');
+        if (typeof document.hidden !== 'undefined') {
+            var visibilityHandler = function () {
+                if (document.hidden) {
+                    gameInstance.pause();
+                } else {
+                    gameInstance.resume();
+                }
+            };
+
+            document.addEventListener('visibilitychange', visibilityHandler);
+        }
         this.blur();
     };
 
@@ -348,4 +372,5 @@
         this.blur();
     };
     soundButton.onclick = toggleSound;
+
 })();
