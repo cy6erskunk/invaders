@@ -271,6 +271,9 @@
     var Keyboarder = {
         init: function () {
             window.onkeydown = function (e) {
+                if (e.target && e.target.nodeName.toLowerCase() === 'input') {
+                    return;
+                }
                 Keyboarder.keyState[e.keyCode] = true;
                 e.preventDefault();
             };
