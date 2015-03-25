@@ -348,17 +348,6 @@
 
     document.getElementById('start').onclick = function () {
         gameInstance = new Game('screen');
-        if (typeof document.hidden !== 'undefined') {
-            var visibilityHandler = function () {
-                if (document.hidden) {
-                    gameInstance.pause();
-                } else {
-                    gameInstance.resume();
-                }
-            };
-
-            document.addEventListener('visibilitychange', visibilityHandler);
-        }
         this.blur();
     };
 
@@ -376,6 +365,17 @@
     };
     soundButton.onclick = toggleSound;
 
+    if (typeof document.hidden !== 'undefined') {
+        var visibilityHandler = function () {
+            if (document.hidden) {
+                gameInstance.pause();
+            } else {
+                gameInstance.resume();
+            }
+        };
+
+        document.addEventListener('visibilitychange', visibilityHandler);
+    }
     // pause/resume game when focusing/losing focus on text input
     document.addEventListener('focusin', function (e) {
         if (e.target.nodeName.toLowerCase() === 'input') {
