@@ -59,6 +59,8 @@
 
             if (this.bodies.filter(function (b) { return b instanceof Player; }).length === 0) {
                 this.state = this.STATES.LOOSE;
+            } else if (this.invadersBelowPlayer()) {
+                this.state = this.STATES.LOOSE;
             } else if (this.bodies.filter(function (b) { return b instanceof Invader; }).length === 0) {
                 this.state = this.STATES.WIN;
             }
@@ -85,11 +87,16 @@
         addBody: function (body) {
             this.bodies.push(body);
         },
-        invadersBelow: function (invader) {
+        invadersBelow: function (invader, ignoreX) {
             return this.bodies.filter(function(b) { return b instanceof Invader &&
                 b.center.y > invader.center.y &&
-                b.center.x - invader.center.x < invader.size.x;
+                (ignoreX ? true : b.center.x - invader.center.x < invader.size.x);
             }).length > 0;
+        },
+        invadersBelowPlayer: function () {
+            return this.invadersBelow(this.bodies.filter(function (b) {
+                return b instanceof Player;
+            })[0], true);
         },
         gcBodies: function () {
             var self = this;
@@ -231,6 +238,7 @@
 
         this.patrolX = 0;
         this.speedX = 0.3;
+        this.speedY = 0.1;
     };
 
     Invader.prototype = {
@@ -241,6 +249,7 @@
             }
 
             this.center.x += this.speedX;
+            this.center.y += this.speedY;
             this.patrolX += this.speedX;
 
             if ( !this.game.invadersBelow(this) && Math.random() > this.THRESHOLD ) {
