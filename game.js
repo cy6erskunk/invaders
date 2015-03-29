@@ -5,10 +5,15 @@
     var gameInstance;
     var soundDisabled = false;
 
-    var Game = function (canvasId) {
+    var Game = function (options) {
+        options = options || {};
+        var canvasId = options.canvasId;
         var canvas = document.getElementById(canvasId);
         var screen = canvas.getContext('2d');
-        this.gameSize = { x: canvas.width, y: canvas.height };
+        this.gameSize = { 
+            x: options.canvasWidth || canvas.width,
+            y: options.canvasHeight || canvas.height
+        };
 
         this.bodies = createInvaders(this).concat([
             new Player(this, this.gameSize)
@@ -357,7 +362,7 @@
     });
 
     document.getElementById('start').onclick = function () {
-        gameInstance = new Game('screen');
+        gameInstance = new Game({ canvasId: 'screen' });
         this.blur();
     };
 
