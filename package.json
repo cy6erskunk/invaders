@@ -1,0 +1,23 @@
+{
+  "name": "invaders",
+  "version": "0.1.0",
+  "description": "Inspired by Mary Rose Cook talk at Front-Trends 2014 (https://vimeo.com/105955605)",
+  "main": "game.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cy6erskunk/invaders.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cy6erskunk/invaders/issues"
+  },
+  "homepage": "https://github.com/cy6erskunk/invaders#readme",
+  "devDependencies": {
+    "css-loader": "^0.19.0",
+    "style-loader": "^0.12.4"
+  }
+}
