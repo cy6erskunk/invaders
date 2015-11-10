@@ -1,5 +1,3 @@
-/* eslint-env browser */
-/* eslint quotes: [ 1, "single" ], no-underscore-dangle: 0 */
 'use strict';
 var Bullet = function(center, velocity, color) {
     this.size = { x: 3, y: 3 };

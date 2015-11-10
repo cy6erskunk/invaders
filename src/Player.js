@@ -1,6 +1,4 @@
 'use strict';
-/* eslint-env browser */
-/* eslint quotes: [ 1, "single" ], no-underscore-dangle: 0 */
 var Bullet = require('./Bullet'),
     Keyboarder = require('./Keyboarder');
 

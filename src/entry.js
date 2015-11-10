@@ -1,8 +1,6 @@
 'use strict';
 
 require('../game.css');
-/* eslint-env browser */
-/* eslint quotes: [ 1, "single" ], no-underscore-dangle: 0 */
 
 var Game = require('./Game'),
     Player = require('./Player'),
