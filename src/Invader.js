@@ -1,6 +1,6 @@
 'use strict';
 
-var Bullet = require('./Bullet');
+import Bullet from'./Bullet';
 
 var Invader = function(game, center) {
     this.game = game;
@@ -30,4 +30,4 @@ Invader.prototype = {
     }
 };
 
-module.exports = Invader;
+export default Invader;

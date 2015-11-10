@@ -1,6 +1,6 @@
 'use strict';
-var Bullet = require('./Bullet'),
-    Keyboarder = require('./Keyboarder');
+import Bullet from './Bullet';
+import Keyboarder from './Keyboarder';
 
 var Player = function(game, gameSize) {
     this.game = game;
@@ -57,4 +57,4 @@ Player.prototype = {
     }
 };
 
-module.exports = Player;
+export default Player;

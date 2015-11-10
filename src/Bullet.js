@@ -7,10 +7,10 @@ var Bullet = function(center, velocity, color) {
 };
 
 Bullet.prototype = {
-    update: function () {
+    update () {
         this.center.x += this.velocity.x;
         this.center.y += this.velocity.y;
     }
 };
 
-module.exports = Bullet;
+export default Bullet;

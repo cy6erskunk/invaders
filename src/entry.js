@@ -2,10 +2,10 @@
 
 require('../game.css');
 
-var Game = require('./Game'),
-    Player = require('./Player'),
-    Keyboarder = require('./Keyboarder'),
-    Invader = require('./Invader');
+import Game from './Game';
+import Player from './Player';
+import Keyboarder from './Keyboarder';
+import Invader from './Invader';
 
 Keyboarder.init();
 

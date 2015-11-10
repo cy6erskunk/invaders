@@ -1,8 +1,8 @@
 'use strict';
 
-var Player = require('./Player'),
-    Keyboarder = require('./Keyboarder'),
-    Invader = require('./Invader');
+import Player from './Player';
+import Keyboarder from './Keyboarder';
+import Invader from './Invader';
 
 var createInvaders = function (game) {
     var invaders = [];
@@ -148,4 +148,4 @@ var loadSound = function (url, callback) {
     sound.load();
 };
 
-module.exports = Game;
+export default Game;

@@ -1,4 +1,5 @@
 'use strict';
+
 var Keyboarder = {
     init: function () {
         window.onkeydown = function (e) {
@@ -24,4 +25,4 @@ var Keyboarder = {
     }
 };
 
-module.exports = Keyboarder;
+export default Keyboarder;

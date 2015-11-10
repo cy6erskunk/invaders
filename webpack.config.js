@@ -6,7 +6,16 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /\.css$/, loader: "style!css" }
+            { test: /\.css$/, loader: "style!css" },
+            {
+                test: /\.js$/,
+                loader: 'babel',
+                query: {
+                    // https://github.com/babel/babel-loader#options
+                    cacheDirectory: true,
+                    presets: ['es2015']
+                }
+            }
         ]
     }
 };
